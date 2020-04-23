@@ -55,7 +55,7 @@ class Screen extends StatelessWidget {
       body: ListView(
         children: <Widget>[
           SizedBox(
-            height: 250,
+            height: 200,
             child: Center(
               child: Text(title, style: TextStyle(fontSize: 50)),
             ),
@@ -76,6 +76,18 @@ class Screen extends StatelessWidget {
             caption: 'maybePop()',
             onPressed: () => Navigator.maybePop(context),
           ),
+          _Button(
+            showPrevious: true,
+            caption: 'test canPop() before pop()',
+            onPressed: () {
+              if (Navigator.canPop(context)) {
+                Navigator.maybePop(context);
+              }
+            },
+          ),
+          Center(
+              child: Text('canPop(): ${Navigator.canPop(context).toString()}',
+                  style: TextStyle(fontSize: 25))),
         ],
       ),
     );
