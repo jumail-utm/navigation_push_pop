@@ -49,7 +49,7 @@ class Screen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Push and Pop Example'),
+        title: Text('pop() vs maybePop()'),
         centerTitle: true,
       ),
       body: ListView(
@@ -63,13 +63,18 @@ class Screen extends StatelessWidget {
           if (nextRoute != null)
             _Button(
               showNext: true,
-              caption: 'push (to open next screen)',
+              caption: 'push()',
               onPressed: () => Navigator.pushNamed(context, nextRoute),
             ),
           _Button(
             showPrevious: true,
-            caption: 'pop (to close this screen)',
+            caption: 'pop()',
             onPressed: () => Navigator.pop(context),
+          ),
+          _Button(
+            showPrevious: true,
+            caption: 'maybePop()',
+            onPressed: () => Navigator.maybePop(context),
           ),
         ],
       ),
@@ -97,7 +102,12 @@ class _Button extends StatelessWidget {
               showPrevious != null ? Icons.navigate_before : null,
               size: 50,
             ),
-            Text(caption),
+            SizedBox(
+                width: 200,
+                child: Text(
+                  caption,
+                  textAlign: TextAlign.center,
+                )),
             Icon(
               showNext != null ? Icons.navigate_next : null,
               size: 50,
