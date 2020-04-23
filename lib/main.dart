@@ -47,48 +47,51 @@ class Screen extends StatelessWidget {
   Screen({this.title, this.nextRoute});
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('pop() vs maybePop()'),
-        centerTitle: true,
-      ),
-      body: ListView(
-        children: <Widget>[
-          SizedBox(
-            height: 200,
-            child: Center(
-              child: Text(title, style: TextStyle(fontSize: 50)),
+    return WillPopScope(
+      onWillPop: () => Future.value(Navigator.canPop(context)),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('pop() vs maybePop()'),
+          centerTitle: true,
+        ),
+        body: ListView(
+          children: <Widget>[
+            SizedBox(
+              height: 200,
+              child: Center(
+                child: Text(title, style: TextStyle(fontSize: 50)),
+              ),
             ),
-          ),
-          if (nextRoute != null)
+            if (nextRoute != null)
+              _Button(
+                showNext: true,
+                caption: 'push()',
+                onPressed: () => Navigator.pushNamed(context, nextRoute),
+              ),
             _Button(
-              showNext: true,
-              caption: 'push()',
-              onPressed: () => Navigator.pushNamed(context, nextRoute),
+              showPrevious: true,
+              caption: 'pop()',
+              onPressed: () => Navigator.pop(context),
             ),
-          _Button(
-            showPrevious: true,
-            caption: 'pop()',
-            onPressed: () => Navigator.pop(context),
-          ),
-          _Button(
-            showPrevious: true,
-            caption: 'maybePop()',
-            onPressed: () => Navigator.maybePop(context),
-          ),
-          _Button(
-            showPrevious: true,
-            caption: 'test canPop() before pop()',
-            onPressed: () {
-              if (Navigator.canPop(context)) {
-                Navigator.maybePop(context);
-              }
-            },
-          ),
-          Center(
-              child: Text('canPop(): ${Navigator.canPop(context).toString()}',
-                  style: TextStyle(fontSize: 25))),
-        ],
+            _Button(
+              showPrevious: true,
+              caption: 'maybePop()',
+              onPressed: () => Navigator.maybePop(context),
+            ),
+            _Button(
+              showPrevious: true,
+              caption: 'test canPop() before pop()',
+              onPressed: () {
+                if (Navigator.canPop(context)) {
+                  Navigator.maybePop(context);
+                }
+              },
+            ),
+            Center(
+                child: Text('canPop(): ${Navigator.canPop(context).toString()}',
+                    style: TextStyle(fontSize: 25))),
+          ],
+        ),
       ),
     );
   }
