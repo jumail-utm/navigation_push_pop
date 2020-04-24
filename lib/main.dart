@@ -14,6 +14,7 @@ Route<dynamic> generateRoute(settings) {
     case '/':
     case '/screen1':
       return MaterialPageRoute(
+        settings: RouteSettings(name: '/screen1'),
         builder: (_) => Screen(
           title: 'Screen 1',
           nextRoute: '/screen2',
@@ -22,6 +23,7 @@ Route<dynamic> generateRoute(settings) {
 
     case '/screen2':
       return MaterialPageRoute(
+        settings: RouteSettings(name: '/screen2'),
         builder: (_) => Screen(
           title: 'Screen 2',
           nextRoute: '/screen3',
@@ -30,6 +32,7 @@ Route<dynamic> generateRoute(settings) {
 
     case '/screen3':
       return MaterialPageRoute(
+        settings: RouteSettings(name: '/screen3'),
         builder: (_) => Screen(
           title: 'Screen 3',
           nextRoute: null,
@@ -78,6 +81,12 @@ class Screen extends StatelessWidget {
               caption: 'maybePop()',
               onPressed: () => Navigator.maybePop(context),
             ),
+            _Button(
+                showPrevious: true,
+                caption: 'popUntil() - screen1',
+                onPressed: () {
+                  Navigator.popUntil(context, ModalRoute.withName('/screen1'));
+                }),
             _Button(
               showPrevious: true,
               caption: 'test canPop() before pop()',
