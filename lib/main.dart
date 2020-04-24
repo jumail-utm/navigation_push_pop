@@ -29,15 +29,15 @@ Route<dynamic> generateRoute(settings) {
       );
 
     case '/screen3':
-      return MaterialPageRoute(
-        builder: (_) => Screen(
+      return SlideRightRoute(
+        widget: Screen(
           title: 'Screen 3',
           nextRoute: null,
         ),
       );
     case '/replacement':
-      return MaterialPageRoute(
-        builder: (_) => Screen(
+      return SlideRightRoute(
+        widget: Screen(
           title: 'Replacement',
           nextRoute: null,
         ),
@@ -161,4 +161,31 @@ class _Button extends StatelessWidget {
       ),
     );
   }
+}
+
+// Custome page transition,
+// source: https://medium.com/@agungsurya/create-custom-router-transition-in-flutter-using-pageroutebuilder-73a1a9c4a171
+
+class SlideRightRoute extends PageRouteBuilder {
+  final Widget widget;
+  SlideRightRoute({this.widget})
+      : super(
+          pageBuilder: (BuildContext context, Animation<double> animation,
+              Animation<double> secondaryAnimation) {
+            return widget;
+          },
+          transitionDuration: Duration(seconds: 2),
+          transitionsBuilder: (BuildContext context,
+              Animation<double> animation,
+              Animation<double> secondaryAnimation,
+              Widget child) {
+            return new SlideTransition(
+              position: new Tween<Offset>(
+                begin: const Offset(-1.0, 0.0),
+                end: Offset.zero,
+              ).animate(animation),
+              child: child,
+            );
+          },
+        );
 }
