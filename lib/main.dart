@@ -83,9 +83,12 @@ class Screen extends StatelessWidget {
             ),
             _Button(
                 showPrevious: true,
-                caption: 'popUntil() - screen1',
+                caption: 'popUntil() - first screen',
                 onPressed: () {
-                  Navigator.popUntil(context, ModalRoute.withName('/screen1'));
+                  // Navigator.popUntil(context, ModalRoute.withName('/screen1'));
+
+                  // Alternatively
+                  Navigator.popUntil(context, (route) => route.isFirst);
                 }),
             _Button(
               showPrevious: true,
