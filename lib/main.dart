@@ -1,15 +1,15 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(
       title: 'navigation push and pop',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(primarySwatch: Colors.pink),
+      theme: ThemeData(primarySwatch: Colors.purple),
       onGenerateRoute: generateRoute,
     ));
 
 Route<dynamic> generateRoute(settings) {
+  // print('in Router: ${settings.arguments}');
+
   switch (settings.name) {
     case '/':
     case '/screen1':
@@ -35,6 +35,13 @@ Route<dynamic> generateRoute(settings) {
           nextRoute: null,
         ),
       );
+    case '/replacement':
+      return MaterialPageRoute(
+        builder: (_) => Screen(
+          title: 'Replacement',
+          nextRoute: null,
+        ),
+      );
   }
 
   return null;
@@ -49,7 +56,7 @@ class Screen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Push and Pop Example'),
+        title: Text('More push operations'),
         centerTitle: true,
       ),
       body: ListView(
@@ -63,13 +70,55 @@ class Screen extends StatelessWidget {
           if (nextRoute != null)
             _Button(
               showNext: true,
-              caption: 'push (to open next screen)',
-              onPressed: () => Navigator.pushNamed(context, nextRoute),
+              caption: 'pushNamed()',
+              onPressed: () async {
+                final result = await Navigator.pushNamed(context, nextRoute,
+                    arguments: 'args sent from $title pushNamed');
+
+                print('In "$title pushNamed", receiving "$result"');
+              },
             ),
           _Button(
-            showPrevious: true,
-            caption: 'pop (to close this screen)',
-            onPressed: () => Navigator.pop(context),
+            showNext: true,
+            caption: 'pushReplacementNamed()',
+            onPressed: () async {
+              final result = await Navigator.pushReplacementNamed(
+                context,
+                '/replacement',
+                arguments: 'args sent from $title pushReplacementNamed',
+                result: 'result from $title',
+              );
+
+              print('In "$title pushReplacementNamed", receiving "$result"');
+            },
+          ),
+          _Button(
+            showNext: true,
+            caption: 'popAndPushNamed()',
+            onPressed: () async {
+              final result = await Navigator.popAndPushNamed(
+                context,
+                '/replacement',
+                arguments: 'args sent from $title pushReplacementNamed',
+                result: 'result from $title',
+              );
+
+              print('In "$title popAnPushNamed", receiving "$result"');
+            },
+          ),
+          _Button(
+            showNext: true,
+            caption: 'pushNamedAndRemoveUntil()',
+            onPressed: () async {
+              final result = await Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/replacement',
+                ModalRoute.withName('/screen1'),
+                arguments: 'args sent from $title pushNamedAndRemoveUntil',
+              );
+
+              print('In "$title pushNamedAndRemoveUntil", receiving "$result"');
+            },
           ),
         ],
       ),
@@ -97,7 +146,12 @@ class _Button extends StatelessWidget {
               showPrevious != null ? Icons.navigate_before : null,
               size: 50,
             ),
-            Text(caption),
+            SizedBox(
+                width: 220,
+                child: Text(
+                  caption,
+                  textAlign: TextAlign.center,
+                )),
             Icon(
               showNext != null ? Icons.navigate_next : null,
               size: 50,
