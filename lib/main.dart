@@ -113,7 +113,7 @@ class Screen extends StatelessWidget {
               final result = await Navigator.pushNamedAndRemoveUntil(
                 context,
                 '/replacement',
-                ModalRoute.withName('/screen1'),
+                (route) => route.isFirst,
                 arguments: 'args sent from $title pushNamedAndRemoveUntil',
               );
 
